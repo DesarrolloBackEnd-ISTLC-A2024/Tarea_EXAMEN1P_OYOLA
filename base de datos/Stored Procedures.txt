@@ -1,0 +1,63 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `furbol`.`SP_DEL_Futbolistas`(
+	in PI_ID INT
+)
+BEGIN
+	UPDATE Futbolista
+	SET Estado = 'I'
+	WHERE ID = PI_ID;
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `furbol`.`SP_GET_Futbolistas`(
+    IN PI_ID INT
+)
+BEGIN
+    SELECT * FROM Futbolista
+    WHERE ID = PI_ID;
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `furbol`.`SP_GET_FutbolistasACTIVE`()
+begin
+	SELECT * FROM Futbolista
+	WHERE Estado = 'A';
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `furbol`.`SP_GET_HISTORICOFUTBOLISTAS`(
+    IN PI_ID INT
+)
+BEGIN
+   SELECT f.Nombre, f.Apellido, e.Nombre AS nombreequipo, h.Fecha_Inicio, h.Fecha_Fin
+   FROM Furbol.Futbolista AS f
+   INNER JOIN Furbol.HistoricoEquipos h ON f.ID = h.ID_Futbolista
+   INNER JOIN Furbol.Equipos e ON h.ID_Equipo = e.ID_Equipo
+   WHERE f.ID = PI_ID;
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `furbol`.`SP_INS_Futbolistas`(
+    in PV_Nombre varchar(100),
+	in PV_Apellido varchar(100),
+	in PI_Numero_Camisa int,
+	in PD_Fecha_Nacimiento date,
+	in PD_Fecha_Retiro date
+)
+BEGIN
+	INSERT INTO Futbolista (Nombre,Apellido,Numero_Camisa,Fecha_Nacimiento,Fecha_Retiro,Estado)
+	VALUES (PV_Nombre, PV_Apellido, PI_Numero_Camisa, PD_Fecha_Nacimiento,PD_Fecha_Retiro , 'A');
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `furbol`.`SP_UPD_Futbolistas`(
+	in PI_ID INT,
+    in PV_Nombre varchar(100),
+	in PV_Apellido varchar(100),
+	in PI_Numero_Camisa int,
+	in PD_Fecha_Nacimiento date,
+	in PD_Fecha_Retiro date
+)
+BEGIN
+	UPDATE Futbolista
+	SET Nombre = PV_Nombre,
+		Apellido = PV_Apellido,
+		Numero_Camisa = PI_Numero_Camisa,
+		Fecha_Nacimiento = PD_Fecha_Nacimiento,
+		Fecha_Retiro = PD_Fecha_Retiro
+	WHERE ID = PI_ID;
+END

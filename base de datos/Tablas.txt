@@ -1,0 +1,40 @@
+-- furbol.equipos definition
+
+CREATE TABLE `equipos` (
+  `ID_Equipo` int(11) NOT NULL AUTO_INCREMENT,
+  `Nombre` varchar(100) NOT NULL,
+  `Lugar_Equipo` varchar(50) NOT NULL,
+  `Campeonatos_Ganados` int(11) NOT NULL,
+  `Fecha_Inicio` date NOT NULL,
+  `Fecha_Fin` date DEFAULT NULL,
+  `Estado` varchar(1) NOT NULL,
+  PRIMARY KEY (`ID_Equipo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- furbol.futbolista definition
+
+CREATE TABLE `futbolista` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Nombre` varchar(100) NOT NULL,
+  `Apellido` varchar(100) NOT NULL,
+  `Numero_Camisa` int(11) NOT NULL,
+  `Fecha_Nacimiento` date NOT NULL,
+  `Fecha_Retiro` date DEFAULT NULL,
+  `Estado` varchar(1) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- furbol.historicoequipos definition
+
+CREATE TABLE `historicoequipos` (
+  `ID_HistoricoEquipos` int(11) NOT NULL AUTO_INCREMENT,
+  `ID_Futbolista` int(11) NOT NULL,
+  `ID_Equipo` int(11) NOT NULL,
+  `Fecha_Inicio` date NOT NULL,
+  `Fecha_Fin` date DEFAULT NULL,
+  PRIMARY KEY (`ID_HistoricoEquipos`),
+  KEY `fk_HistoricoEquipos_Futbolista` (`ID_Futbolista`),
+  KEY `fk_HistoricoEquipos_Equipos` (`ID_Equipo`),
+  CONSTRAINT `fk_HistoricoEquipos_Equipos` FOREIGN KEY (`ID_Equipo`) REFERENCES `equipos` (`ID_Equipo`),
+  CONSTRAINT `fk_HistoricoEquipos_Futbolista` FOREIGN KEY (`ID_Futbolista`) REFERENCES `futbolista` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
